@@ -34,11 +34,23 @@ public class Contract extends Message
 	    return this.signatureRecipient;
 	}
 	
+	public boolean verifyRecipient( PublicKey publicKey, Signature sig ) throws InvalidKeyException, SignatureException{
+		sig.initVerify( publicKey );
+		sig.update( this.payload );
+		return sig.verify( this.signatureRecipient );
+	}
+	
 	byte[] signNotary( PrivateKey privateKey , Signature sig ) throws InvalidKeyException, SignatureException{
 		sig.initSign( privateKey );
 	    sig.update( payload );
 	    this.signatureNotary = sig.sign();
 	    return this.signatureNotary;
+	}
+	
+	public boolean verifyNotary( PublicKey publicKey, Signature sig ) throws InvalidKeyException, SignatureException{
+		sig.initVerify( publicKey );
+		sig.update( this.payload );
+		return sig.verify( this.signatureNotary );
 	}
 	
 	
@@ -78,7 +90,7 @@ public class Contract extends Message
 	    testContract.signNotary(notaryKey.getPrivate(), sig);
 	    
 	    try {
-		      if ( testContract.verify(intiatorKey.getPublic(), sig) ) {
+		      if ( testContract.verifyInitiator(intiatorKey.getPublic(), sig) ) {
 		        System.out.println( "Initiator Signature verified" );
 		      } else System.out.println( "Signature failed" );
 		    } catch (SignatureException se) {

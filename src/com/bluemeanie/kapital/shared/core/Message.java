@@ -25,7 +25,7 @@ public class Message implements Serializable {
 	
 	protected byte[] payload;
 	
-	protected byte[] initiatorSignature;
+	protected byte[] signatureInitiator;
 	
 	/**
 	 * @param args
@@ -47,20 +47,20 @@ public class Message implements Serializable {
 	}
 	
 	boolean isFullySigned() {
-		return ( initiatorSignature != null );
+		return ( signatureInitiator != null );
 	}
 	
 	public byte[] signInitiator( PrivateKey privateKey, Signature sig ) throws InvalidKeyException, SignatureException{
 		sig.initSign( privateKey );
 	    sig.update( payload );
-	    this.initiatorSignature = sig.sign();
-	    return this.initiatorSignature;
+	    this.signatureInitiator = sig.sign();
+	    return this.signatureInitiator;
 	}
 	
-	public boolean verify( PublicKey publicKey, Signature sig ) throws InvalidKeyException, SignatureException{
+	public boolean verifyInitiator( PublicKey publicKey, Signature sig ) throws InvalidKeyException, SignatureException{
 		sig.initVerify( publicKey );
 		sig.update( this.payload );
-		return sig.verify( this.initiatorSignature );
+		return sig.verify( this.signatureInitiator );
 	}
 	
 	public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, SignatureException {
@@ -86,7 +86,7 @@ public class Message implements Serializable {
 	    testMessage.signInitiator(key.getPrivate(), sig);
 	    
 	    try {
-		      if ( testMessage.verify(key.getPublic(), sig) ) {
+		      if ( testMessage.verifyInitiator(key.getPublic(), sig) ) {
 		        System.out.println( "Signature verified" );
 		      } else System.out.println( "Signature failed" );
 		    } catch (SignatureException se) {
