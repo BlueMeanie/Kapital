@@ -13,19 +13,19 @@ import java.security.Security;
 import java.security.Signature;
 import java.security.SignatureException;
 
-public class Contract extends Message
+public class TripleContract extends Message
  implements Serializable {
 
 	byte[] signatureRecipient;
 	byte[] signatureNotary;
 	
-	Contract(){};
+	TripleContract(){};
 	
-	Contract( String payload ){
+	TripleContract( String payload ){
 		super(payload);
 	}
 	
-	Contract( String payload, PrivateKey signer ){};
+	TripleContract( String payload, PrivateKey signer ){};
 	
 	byte[] signRecipient( PrivateKey privateKey , Signature sig ) throws InvalidKeyException, SignatureException{
 		sig.initSign( privateKey );
@@ -63,7 +63,7 @@ public class Contract extends Message
 	 */
 	public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
 
-		Contract testContract = new Contract("E PLURIBUS UNUM.");
+		TripleContract testContract = new TripleContract("E PLURIBUS UNUM.");
 
 	    //
 	    // generate an RSA keypair
