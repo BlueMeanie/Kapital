@@ -19,7 +19,7 @@ public class TripleContract extends Message
 	byte[] signatureRecipient;
 	byte[] signatureNotary;
 	
-	TripleContract(){};
+	protected TripleContract(){};
 	
 	TripleContract( String payload ){
 		super(payload);
